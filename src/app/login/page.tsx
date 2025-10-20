@@ -5,17 +5,30 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 
 export default function LoginPage(){
+    const router = useRouter();
     const [user, setUser] = useState({
         email: "",
         password: ""
     })
+
+    const onLogin = async (e: any) => {
+        e.preventDefault();
+        try {
+            const response = await axios.post("/api/users/login", user);
+            console.log("Login success", response.data);
+            router.push("/profile")
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return(
         <div className="container">
-            <form>
+            <form onSubmit={onLogin}>
                 <h1>Login</h1>
                 <input type="email" placeholder="Enter email" value={user.email} onChange={(e) => setUser({...user, email: e.target.value})} />
                 <input type="password" placeholder="Enter password" value={user.password} onChange={(e) => setUser({...user, password: e.target.value})} />
-                <button>Submit</button>
+                <button type="submit">Submit</button>
             </form>
             <Link className="back_link" href="/signup">Back to signup</Link>
         </div>
