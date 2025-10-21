@@ -1,8 +1,10 @@
 "use client"
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function ProfilePage(){
+    const [data, setData] = useState([]);
     const router = useRouter();
     const logout = async () => {
         try {
@@ -12,9 +14,21 @@ export default function ProfilePage(){
             console.log(error);
         }
     }
+
+    const getUserDetails = async () => {
+        const res = await axios.get("/api/users/me");
+        console.log(res.data);
+        setData(res.data.data)
+    }
+
+    useEffect(() => {
+        getUserDetails();
+    },[])
+
     return(
         <>
             <h1>Profile page</h1>
+            <p>Welcome {data.username}</p>
             <button onClick={logout} className="logout">Logout</button>
         </>
     )
