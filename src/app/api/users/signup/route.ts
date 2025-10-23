@@ -1,7 +1,8 @@
 import {connect} from '@/dbConfig/dbConfig';
-import userModel from '@/models/user.model.js';
+import UserModel from '@/models/user.model.js';
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
+import { sendMail } from '@/helpers/mailer';
  
 connect();
 
@@ -10,7 +11,7 @@ export async function POST(request: NextRequest){
         const reqBody = await request.json();
         const {username, password, email} = reqBody;
 
-        const user = await userModel.findOne({email});
+        const user = await UserModel.findOne({email});
         if(user){
             return NextResponse.json({error: "User already exists"}, {status: 400})
         }
@@ -18,13 +19,15 @@ export async function POST(request: NextRequest){
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        const newUser = new userModel({
+        const newUser = new UserModel({
             username,
             email,
             password: hashedPassword
         })
 
         const savedUser = await newUser.save();
+
+        await sendMail({email, emailType:"VERIFY", userId: savedUser._id})
 
         return NextResponse.json({message: "User created", success: true, savedUser});
         

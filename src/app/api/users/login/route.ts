@@ -1,5 +1,5 @@
 import {connect} from '@/dbConfig/dbConfig';
-import userModel from '@/models/user.model.js';
+import UserModel from '@/models/user.model.js';
 import { NextRequest, NextResponse } from 'next/server';
 import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
@@ -11,7 +11,7 @@ export async function POST(request: NextRequest){
         const reqBody = await request.json();
         const {email, password} = reqBody;
 
-        const user = await userModel.findOne({email})
+        const user = await UserModel.findOne({email})
         if(!user){
             return NextResponse.json({error: "User does not exist"}, {status: 400})
         }
