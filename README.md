@@ -1,36 +1,35 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+This project is a full-stack authentication system built using Next.js and MongoDB.
+It provides a secure user management flow with JWT-based authentication, protected API routes, and email verification features using Nodemailer + Mailtrap for development testing.
 
-## Getting Started
+The app demonstrates how to build a production-ready authentication system in Next.js with secure backend integration and seamless frontend routing.
 
-First, run the development server:
+🛠️ Tech Stack
+- Frontend: Next.js (App Router)
+- Backend: Next.js API routes (Node.js)
+- Database: MongoDB (Mongoose)
+- Authentication: JSON Web Tokens (JWT)
+- Mail Service: Nodemailer + Mailtrap (for test emails)
+- Password Hashing: bcrypt.js
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+🔐 Core Features
+🧍 User Authentication
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Register / Sign Up:
+Users can register with name, email, and password.
+Upon registration, an email verification link is sent using Mailtrap.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Login:
+Secure login using JWT tokens.
+Tokens are stored safely in HTTP-only cookies for enhanced security.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Logout:
+Tokens are cleared from cookies to end sessions securely.
 
-## Learn More
+📧 Email Verification (via Nodemailer + Mailtrap)
+When a new user registers, a verification email is automatically sent. The email contains a verification link with a token parameter. Clicking the link verifies the user in MongoDB by updating the isVerified field.
 
-To learn more about Next.js, take a look at the following resources:
+🔑 Forgot / Reset Password
+Users can request a password reset email.The app generates a temporary JWT token and sends it via Mailtrap. Clicking the reset link allows the user to enter a new password securely.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+🛡️ Protected Routes (JWT Middleware)
+Certain API routes and pages are accessible only to authenticated users.Middleware validates JWT tokens before allowing access. If unauthorized, users are redirected to the login page.
