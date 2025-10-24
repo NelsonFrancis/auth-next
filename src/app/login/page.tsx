@@ -30,7 +30,10 @@ export default function LoginPage(){
                 <input type="password" placeholder="Enter password" value={user.password} onChange={(e) => setUser({...user, password: e.target.value})} />
                 <button type="submit">Submit</button>
             </form>
-            <Link className="back_link" href="/signup">Back to signup</Link>
+            <div className="login_links">
+                <Link className="back_link" href="/signup">Back to signup</Link>
+                <Link className="back_link" href="/forgotpassword">Forgot password?</Link>
+            </div>
         </div>
     )
 }
